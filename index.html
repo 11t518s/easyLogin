@@ -72,7 +72,7 @@
 
         signInWithEmailAndPassword(auth, loginEmail, loginPassword)
           .then((userCredential) => {
-            // Signed in
+            // Signin
             const user = userCredential.user;
             loginComponent.style.display = "none";
             signUpComponent.style.display = "none";
@@ -94,7 +94,7 @@
 
         createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
           .then((userCredential) => {
-            // Signed in
+            // Signup
             const user = userCredential.user;
             loginComponent.style.display = "none";
             signUpComponent.style.display = "none";
@@ -116,6 +116,7 @@
       document.getElementById("logoutButton").addEventListener("click", () => {
         signOut(auth)
           .then(() => {
+            // 로그아웃
             loginComponent.style.display = "initial";
             signUpComponent.style.display = "none";
             loginSuccessComponent.style.display = "none";
