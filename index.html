@@ -1,142 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <form>
+        <h1>회원가입</h1>
+        <div> email : <input type="email" id="signUpEmail" /> </div>
+        <div> password : <input type="password" id="signUpPassword" /> </div>
+        <button type="submit" id="signUpButton" >회원가입 하기</button>
+        <button >로그인 하러 가기</button>
 
-    <title>Document</title>
-  </head>
+    </form>
 
-  <body>
-    <div id="loginComponent">
-      <h1>로그인</h1>
-      <input id="loginEmail" type="email" />
-      <input id="loginPassword" type="password" />
-      <button type="submit" id="loginButton">로그인하기</button>
-      <button class="goToSignUp">회원가입 하러가기</button>
-    </div>
+    <form>
+        <h1>로그인</h1>
+        <div> email : <input type="email" id="signInEmail" /> </div>
+        <div> password : <input type="password" id="signInPassword" /> </div>
+        <button type="submit" id="signInButton" >로그인 하기</button>
+        <button >회원가입 하러 가기</button>
 
-    <div id="signUpComponent">
-      <h1>회원가입</h1>
-      <input id="signUpEmail" type="email" />
-      <input id="signUpPassword" type="password" />
-      <button type="submit" id="signUpButton">회원가입하기</button>
-      <button class="goToLogin">로그인 하러가기</button>
-    </div>
-
-    <div id="loginSuccessComponent">
-      <h1>로그인 축하드립니다!</h1>
-      <p>유저의 email은 <b id="loggedInEmail"></b>입니다!</p>
-      <button id="logoutButton">로그아웃하기</button>
-    </div>
-
+    </form>
     <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
-      import {
-        getAuth,
-        createUserWithEmailAndPassword,
-        signInWithEmailAndPassword,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-auth.js";
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyCH_qQKgvX04MCiInM0t-1el2gXoNc9YpI",
+          authDomain: "easylogin-69172.firebaseapp.com",
+          projectId: "easylogin-69172",
+          storageBucket: "easylogin-69172.appspot.com",
+          messagingSenderId: "507786873248",
+          appId: "1:507786873248:web:a4effc2440a8e81bfbfcc5",
+          measurementId: "G-X3G15GWG5T"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
 
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.9.0/firebase-auth.js";
 
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      const firebaseConfig = {
-        apiKey: "AIzaSyB-G61dk_HDj_ckwLcfZ6WmRgO7KhPSYVA",
-        authDomain: "easylogin-f5e37.firebaseapp.com",
-        projectId: "easylogin-f5e37",
-        storageBucket: "easylogin-f5e37.appspot.com",
-        messagingSenderId: "802808736711",
-        appId: "1:802808736711:web:af16522a534687e835c7e2",
-        measurementId: "G-BSC3FKT10P",
-      };
+        const auth = getAuth();
 
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth();
+        document.getElementById('signUpButton').addEventListener('click', (event) => {
+            event.preventDefault()
+            const signUpEmail = document.getElementById('signUpEmail').value
+            const signUpPassword = document.getElementById('signUpPassword').value
 
-      const loginComponent = document.getElementById("loginComponent");
-      const signUpComponent = document.getElementById("signUpComponent");
-      const loginSuccessComponent = document.getElementById(
-        "loginSuccessComponent"
-      );
+            createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
+                .then((userCredential) => {
+                    console.log(userCredential)
+                    // Signed in
+                    const user = userCredential.user;
+                    // ...
+                })
+                .catch((error) => {
+                    console.log('error')
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    // ..
+                });
 
-      document.getElementById("loginButton").addEventListener("click", () => {
-        const loginEmail = document.getElementById("loginEmail").value;
-        const loginPassword = document.getElementById("loginPassword").value;
+        })
 
-        signInWithEmailAndPassword(auth, loginEmail, loginPassword)
-          .then((userCredential) => {
-            // Signin
-            const user = userCredential.user;
-            loginComponent.style.display = "none";
-            signUpComponent.style.display = "none";
-            loginSuccessComponent.style.display = "initial";
+        document.getElementById('signInButton').addEventListener('click', (event) => {
+            event.preventDefault()
+            const signInEmail = document.getElementById('signInEmail').value
+            const signInPassword = document.getElementById('signInPassword').value
+            signInWithEmailAndPassword(auth, signInEmail, signInPassword)
+                .then((userCredential) => {
+                    // Signed in
+                    console.log(userCredential)
+                    const user = userCredential.user;
+                    // ...
+                })
+                .catch((error) => {
+                    console.log('로그인 실패')
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                });
 
-            document.getElementById("loggedInEmail").innerText = user.email;
-            // ...
-          })
-          .catch((error) => {
-            alert(
-              "로그인에 실패했습니다! 이메일과 비밀번호를 다시 확인해주세요!"
-            );
-          });
-      });
-
-      document.getElementById("signUpButton").addEventListener("click", () => {
-        const signUpEmail = document.getElementById("signUpEmail").value;
-        const signUpPassword = document.getElementById("signUpPassword").value;
-
-        createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword)
-          .then((userCredential) => {
-            // Signup
-            const user = userCredential.user;
-            loginComponent.style.display = "none";
-            signUpComponent.style.display = "none";
-            loginSuccessComponent.style.display = "initial";
-
-            document.getElementById("loggedInEmail").innerText = user.email;
-
-            // ...
-          })
-          .catch((error) => {
-            alert(
-              "회원가입을 실패했습니다! 정보를 바르게 입력하고 다시 시도해주세요"
-            );
-
-            // ..
-          });
-      });
-
-      document.getElementById("logoutButton").addEventListener("click", () => {
-        signOut(auth)
-          .then(() => {
-            // 로그아웃
-            loginComponent.style.display = "initial";
-            signUpComponent.style.display = "none";
-            loginSuccessComponent.style.display = "none";
-          })
-          .catch((error) => {
-            alert("다시 로그아웃 해주세요!");
-          });
-      });
-
-      document.getElementById("goToLogin").addEventListener("click", () => {
-        loginComponent.style.display = "initial";
-        signUpComponent.style.display = "none";
-        loginSuccessComponent.style.display = "none";
-      });
-
-      document.getElementById("goToSignUp").addEventListener("click", () => {
-        loginComponent.style.display = "none";
-        signUpComponent.style.display = "initial";
-        loginSuccessComponent.style.display = "none";
-      });
-    </script>
-  </body>
+        })
+      </script>
+</body>
 </html>
